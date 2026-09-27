@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { supabase } from '../supabaseClient';
 
 export default function Dashboard() {
@@ -10,10 +11,9 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // 🔐 THE SECURITY GUARD: checks who is at the door
     supabase.auth.getSession().then(({ data }) => {
       if (!data.session) {
-        router.push('/'); // Not logged in? Back to the front door.
+        router.push('/');
       } else {
         setSession(data.session);
         setLoading(false);
@@ -65,16 +65,18 @@ export default function Dashboard() {
 
       {/* Workspace Cards */}
       <div className="z-10 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-        <div className="glass-card p-8">
+        <Link href="/dashboard/vault" className="glass-card p-8 block cursor-pointer">
           <h3 className="text-xl font-bold text-white mb-3">📚 Knowledge Vault</h3>
           <p className="text-gray-400 mb-6">Upload your company info and past proposals. The AI learns YOUR voice.</p>
-          <button className="glow-btn text-white text-sm w-full">Coming in Step 5</button>
-        </div>
+          <span className="glow-btn text-white text-sm w-full block text-center">Open Vault →</span>
+        </Link>
+
         <div className="glass-card p-8">
           <h3 className="text-xl font-bold text-white mb-3">⚡ Proposal Generator</h3>
           <p className="text-gray-400 mb-6">Paste a tender question. Get a winning, formatted answer in seconds.</p>
           <button className="glow-btn text-white text-sm w-full">Coming in Step 6</button>
         </div>
+
         <div className="glass-card p-8">
           <h3 className="text-xl font-bold text-white mb-3">📁 My Proposals</h3>
           <p className="text-gray-400 mb-6">Every proposal you generate, saved and versioned here.</p>
